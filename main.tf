@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "ec2_trust" {
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name               = "clo835-ec2-role"
+  name               = "LabRole"
   assume_role_policy = data.aws_iam_policy_document.ec2_trust.json
 }
 
