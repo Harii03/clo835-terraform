@@ -1,4 +1,3 @@
-cat > variables.tf <<'HCL'
 variable "region" {
   description = "AWS region to deploy into"
   type        = string
@@ -9,4 +8,3 @@ variable "key_pair_name" {
   description = "Existing EC2 key pair name"
   type        = string
 }
-HCL
