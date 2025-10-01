@@ -1,4 +1,4 @@
-data "aws_vpc" "default" {
+{ data "aws_vpc" "default" {
   default = true
 }
 
@@ -60,14 +60,14 @@ resource "aws_instance" "ec2" {
   key_name                    = var.key_name
   associate_public_ip_address = true
 
-  user_data = <<'BASH'
+  user_data = <<"BASH"
 #!/usr/bin/bash
 # Install docker on Amazon Linux 2023
 dnf update -y
 dnf install -y docker
 systemctl enable --now docker
 usermod -aG docker ec2-user
-echo 'export DOCKER_BUILDKIT=1' >> /etc/profile
+echo "export DOCKER_BUILDKIT=1" >> /etc/profile
 BASH
 
   tags = { Name = "clo835-ec2" }
@@ -80,4 +80,5 @@ data "aws_ami" "al2023" {
     name   = "name"
     values = ["al2023-ami-*-x86_64"]
   }
+}
 }
