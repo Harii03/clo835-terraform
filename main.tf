@@ -1,4 +1,3 @@
-# Use the account's Default VPC and its subnets
 data "aws_vpc" "default" {
   default = true
 }
