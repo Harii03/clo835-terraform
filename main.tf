@@ -1,4 +1,4 @@
-# Default VPC + its subnets
+# Use the account's Default VPC and its subnets
 data "aws_vpc" "default" {
   default = true
 }
@@ -20,7 +20,7 @@ data "aws_ami" "al2023" {
   }
 }
 
-# SG allowing SSH + app ports
+# Security Group: SSH + app ports 8081-8083
 resource "aws_security_group" "web_sg" {
   name        = "clo835-ec2-sg"
   description = "Allow SSH and app ports"
@@ -62,15 +62,16 @@ resource "aws_instance" "host" {
   key_name                    = var.key_pair_name
   associate_public_ip_address = true
 
-  user_data = <<'BASH'
-#!/usr/bin/bash
-set -e
-dnf update -y || yum update -y
-dnf install -y docker || yum install -y docker
-systemctl enable --now docker || (service docker start && chkconfig docker on)
-usermod -aG docker ec2-user || true
-echo 'export DOCKER_BUILDKIT=1' >> /etc/profile
-BASH
+  # Correct heredoc syntax (no quotes)
+  user_data = <<-BASH
+    #!/usr/bin/bash
+    set -e
+    dnf update -y || yum update -y
+    dnf install -y docker || yum install -y docker
+    systemctl enable --now docker || (service docker start && chkconfig docker on)
+    usermod -aG docker ec2-user || true
+    echo "export DOCKER_BUILDKIT=1" >> /etc/profile
+  BASH
 
   tags = { Name = "clo835-ec2" }
 }
