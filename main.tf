@@ -1,4 +1,5 @@
-# Use the account's Default VPC and its subnets
+cat > main.tf <<'HCL'
+# Default VPC + its subnets
 data "aws_vpc" "default" {
   default = true
 }
@@ -62,7 +63,7 @@ resource "aws_instance" "host" {
   key_name                    = var.key_pair_name
   associate_public_ip_address = true
 
-  # Correct heredoc syntax (no quotes)
+  # Correct heredoc (no quotes)
   user_data = <<-BASH
     #!/usr/bin/bash
     set -e
@@ -75,3 +76,4 @@ resource "aws_instance" "host" {
 
   tags = { Name = "clo835-ec2" }
 }
+HCL
